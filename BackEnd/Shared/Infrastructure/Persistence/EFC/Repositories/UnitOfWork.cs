@@ -1,6 +1,5 @@
-﻿using BackEnd.Shared.Domain.Repositories;
+using BackEnd.Shared.Domain.Repositories;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
-
 
 namespace BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
 

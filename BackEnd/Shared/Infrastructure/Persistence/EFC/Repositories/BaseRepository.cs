@@ -1,4 +1,4 @@
-﻿using BackEnd.Shared.Domain.Repositories;
+using BackEnd.Shared.Domain.Repositories;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Microsoft.EntityFrameworkCore;
 

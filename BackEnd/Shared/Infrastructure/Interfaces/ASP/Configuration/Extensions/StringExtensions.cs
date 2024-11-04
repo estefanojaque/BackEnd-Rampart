@@ -1,6 +1,6 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
-namespace BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions;
+namespace BackEnd.Shared.Infrastructure;
 
 public static partial class StringExtensions
 {
@@ -11,8 +11,10 @@ public static partial class StringExtensions
             return text;
         }
 
-        return KebabCaseRegex().Replace(text,"-$1").Trim().ToLower();
+        return KebabCaseRegex().Replace(text, "-$1").Trim().ToLower();
     }
-    [GeneratedRegex("(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])",RegexOptions.Compiled)]
+
+    [GeneratedRegex("(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])", RegexOptions.Compiled)]
     private static partial Regex KebabCaseRegex();
+
 }
