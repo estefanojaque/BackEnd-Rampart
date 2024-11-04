@@ -1,8 +1,8 @@
-﻿using BackEnd.Shared.Domain.Repositories;
-using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
+using catch_up_platform.Shared.Domain.Repositories;
+using catch_up_platform.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-namespace BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
+namespace catch_up_platform.Shared.Infrastructure.Persistence.EFC.Repositories;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 {
