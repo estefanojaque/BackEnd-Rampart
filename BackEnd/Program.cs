@@ -1,15 +1,25 @@
-using catch_up_platform.Dishes;
-using catch_up_platform.Dishes.Application.Internal.CommandServices; // Asegúrate de tener las referencias correctas
-using catch_up_platform.Dishes.Application.Internal.QueryServices;
-using catch_up_platform.Dishes.Domain.Services;
-using catch_up_platform.Shared.Domain.Repositories;
-using catch_up_platform.Shared.Infrastructure;
-using catch_up_platform.Shared.Infrastructure.Persistence.EFC.Configuration;
-using catch_up_platform.Shared.Infrastructure.Persistence.EFC.Repositories;
-using catch_up_platform.UserProfile;
-using catch_up_platform.UserProfile.Application.Internal.QueryServices;
-using catch_up_platform.UserProfile.Application.Internal.CommandServices;
-using catch_up_platform.UserProfile.Domain.Services;
+using BackEnd.Orders.Application.Internal.CommandServices;
+using BackEnd.Orders.Application.Internal.QueryServices;
+using BackEnd.Orders.Domain.Repositories;
+using BackEnd.Orders.Domain.Services;
+using BackEnd.Orders.Infrastructure.Repositories;
+using BackEnd.Shared.Domain.Repositories;
+using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
+using BackEnd.Dishes;
+using BackEnd.Dishes.Application.Internal.CommandServices; // Asegúrate de tener las referencias correctas
+using BackEnd.Dishes.Application.Internal.QueryServices;
+using BackEnd.Dishes.Domain.Services;
+using BackEnd.Shared.Domain.Repositories;
+using BackEnd.Shared.Infrastructure;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
+using BackEnd.UserProfile;
+using BackEnd.UserProfile.Application.Internal.QueryServices;
+using BackEnd.UserProfile.Application.Internal.CommandServices;
+using BackEnd.UserProfile.Domain.Services;
+
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +57,12 @@ else if (builder.Environment.IsProduction())
     });
 }
 
+// Configure Dependency Injection
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderQueryService, OrderQueryService>();
+builder.Services.AddScoped<IOrderCommandService, OrderCommandService>();
+
 // Configure Dependency Injection for UserProfile
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
@@ -66,6 +82,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
+    context.Database.EnsureCreated(); // Handle migrations
     context.Database.Migrate(); // Handle migrations
 }
 
