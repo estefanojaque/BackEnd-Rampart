@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform.Dishes;
+﻿namespace BackEnd.Dishes;
 
 /// <summary>
 /// Command to update a dish's information

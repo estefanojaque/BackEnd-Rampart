@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform.Dishes.Domain.Services
+﻿namespace BackEnd.Dishes.Domain.Services
 {
     public interface IDishCommandService
     {

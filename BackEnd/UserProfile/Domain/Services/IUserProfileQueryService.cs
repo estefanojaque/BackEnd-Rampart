@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform.UserProfile.Domain.Services;
+﻿namespace BackEnd.UserProfile.Domain.Services;
 
 public interface IUserProfileQueryService
 {

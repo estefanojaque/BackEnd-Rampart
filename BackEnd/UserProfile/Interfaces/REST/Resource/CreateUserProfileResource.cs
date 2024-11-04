@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform.UserProfile.Interfaces.REST.Resource;
+﻿namespace BackEnd.UserProfile.Interfaces.REST.Resource;
 
 /// <summary>
 /// Resource for creating a new user profile.

@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform.UserProfile.Interfaces.REST.Resource;
+﻿namespace BackEnd.UserProfile.Interfaces.REST.Resource;
 
 /// <summary>
 /// Resource representing a user profile.

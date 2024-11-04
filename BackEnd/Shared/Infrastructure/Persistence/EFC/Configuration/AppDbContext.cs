@@ -1,11 +1,10 @@
 ﻿using BackEnd.Orders.Domain.Model.Aggregates;
-using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using BackEnd.UserProfile;
 using BackEnd.Dishes;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace catch_up_platform.Shared.Infrastructure.Persistence.EFC.Configuration;
+namespace BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
@@ -20,25 +19,26 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         base.OnModelCreating(builder);
         builder.UseSnakeCaseNamingConvention();
         
-        // Configuración para UserProfile
+        // Configuración para Order
         builder.Entity<Order>().ToTable("order"); // Especifica el nombre de la tabla
-        builder.Entity<Order>().HasKey(up => up.Id);
-        builder.Entity<Order>().Property(up => up.customerId).IsRequired().HasColumnName("customerId");
-        builder.Entity<Order>().Property(up => up.orderDate).IsRequired().HasColumnName("orderDate");
-        builder.Entity<Order>().Property(up => up.deliveryDate).IsRequired().HasColumnName("deliveryDate");
-        builder.Entity<Order>().Property(up => up.paymentMethod).IsRequired().HasColumnName("paymentMethod");
-        builder.Entity<Order>().Property(up => up.totalAmount).IsRequired().HasColumnName("totalAmount");
-        builder.Entity<Order>().Property(up => up.status).IsRequired().HasColumnName("status");
-        //builder.Entity<Order>().Property(up => up.dishes).IsRequired().HasColumnName("dishes");
-        builder.Entity<Order>().Property(up => up.detailsShown).IsRequired().HasColumnName("detailsShown");
-        
-        
-        // Configuración para PreferencesJson
-        // Ignorar la propiedad Preferences
-        builder.Entity<Order>().Ignore(up => up.dishes);
+        builder.Entity<Order>().HasKey(o => o.Id);
+        builder.Entity<Order>().Property(o => o.customerId).IsRequired().HasColumnName("customer_id");
+        builder.Entity<Order>().Property(o => o.orderDate).IsRequired().HasColumnName("order_date");
+        builder.Entity<Order>().Property(o => o.deliveryDate).IsRequired().HasColumnName("delivery_date");
+        builder.Entity<Order>().Property(o => o.paymentMethod).IsRequired().HasColumnName("payment_method");
+        builder.Entity<Order>().Property(o => o.totalAmount).IsRequired().HasColumnName("total_amount");
+        builder.Entity<Order>().Property(o => o.status).IsRequired().HasColumnName("status");
+        builder.Entity<Order>().Property(o => o.detailsShown).IsRequired().HasColumnName("details_shown");
 
-        // Configuración para PreferencesJson
+        // Configurar PreferencesJson como la columna que almacenará los datos JSON de dishes
         builder.Entity<Order>()
+            .Property(o => o.PreferencesJson)
+            .IsRequired()
+            .HasColumnName("preferences_json")
+            .HasColumnType("TEXT"); // Asegura que el tipo sea TEXT o lo equivalente en tu base de datos
+
+        // Ignorar dishes ya que es una propiedad de solo acceso en memoria que usa PreferencesJson
+        builder.Entity<Order>().Ignore(o => o.dishes);
 
         // Configuración para UserProfile
         builder.Entity<ProfileData>().ToTable("user_profiles"); // Especifica el nombre de la tabla
@@ -54,18 +54,15 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<ProfileData>().Property(up => up.YapeNumber).HasColumnName("yapenumber").IsRequired();
         builder.Entity<ProfileData>().Property(up => up.CashPayment).IsRequired().HasColumnName("cashpayment");
         
-        // Configuración para PreferencesJson
         // Ignorar la propiedad Preferences
         builder.Entity<ProfileData>().Ignore(up => up.Preferences);
 
-        // Configuración para PreferencesJson
         builder.Entity<ProfileData>()
             .Property(up => up.PreferencesJson)
             .HasColumnName("preferencesJson") // Asegúrate de que coincida con el nombre de la columna
             .HasColumnType("TEXT") // Tipo para almacenar JSON
             .IsRequired(false); // Puede ser opcional
-    }
-            
+        
         // Configuración para DishData
         builder.Entity<DishData>(entity =>
         {

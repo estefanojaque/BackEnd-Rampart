@@ -1,11 +1,11 @@
 ﻿using System.Net.Mime;
-using catch_up_platform.Dishes.Domain.Services;
-using catch_up_platform.Dishes.Interfaces.REST.Resource;
-using catch_up_platform.Dishes.Interfaces.REST.Transform;
+using BackEnd.Dishes.Domain.Services;
+using BackEnd.Dishes.Interfaces.REST.Resource;
+using BackEnd.Dishes.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace catch_up_platform.Dishes.Interfaces.REST
+namespace BackEnd.Dishes.Interfaces.REST
 {
     [ApiController]
     [Route("/api/v1/dishes")]

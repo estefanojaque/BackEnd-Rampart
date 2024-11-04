@@ -1,11 +1,11 @@
 ﻿using System.Net.Mime;
-using catch_up_platform.UserProfile.Domain.Services;
-using catch_up_platform.UserProfile.Interfaces.REST.Resource;
-using catch_up_platform.UserProfile.Interfaces.REST.Transform;
+using BackEnd.UserProfile.Domain.Services;
+using BackEnd.UserProfile.Interfaces.REST.Resource;
+using BackEnd.UserProfile.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace catch_up_platform.UserProfile.Interfaces.REST;
+namespace BackEnd.UserProfile.Interfaces.REST;
 
 [ApiController]
 [Route("/api/v1/user-profiles")]

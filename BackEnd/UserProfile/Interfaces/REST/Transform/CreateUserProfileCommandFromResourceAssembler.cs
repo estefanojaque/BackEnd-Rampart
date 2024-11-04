@@ -1,6 +1,6 @@
-﻿using catch_up_platform.UserProfile.Interfaces.REST.Resource;
+﻿using BackEnd.UserProfile.Interfaces.REST.Resource;
 
-namespace catch_up_platform.UserProfile.Interfaces.REST.Transform;
+namespace BackEnd.UserProfile.Interfaces.REST.Transform;
 
 public class CreateUserProfileCommandFromResourceAssembler
 {

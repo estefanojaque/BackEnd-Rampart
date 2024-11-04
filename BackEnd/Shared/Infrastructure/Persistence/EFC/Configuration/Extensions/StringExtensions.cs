@@ -1,6 +1,6 @@
 using Humanizer;
 
-namespace catch_up_platform.Shared.Infrastructure.Persistence;
+namespace BackEnd.Shared.Infrastructure.Persistence;
 
 public static class StringExtensions
 {
