@@ -1,11 +1,66 @@
+
+using BackEnd.Orders.Application.Internal.CommandServices;
+using BackEnd.Orders.Application.Internal.QueryServices;
+using BackEnd.Orders.Domain.Repositories;
+using BackEnd.Orders.Domain.Services;
+using BackEnd.Orders.Infrastructure.Repositories;
+using BackEnd.Shared.Domain.Repositories;
+using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 
+/////////////////////////Begin Database Configuration/////////////////////////
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Verify Database Connection string
+if (string.IsNullOrWhiteSpace(connectionString))
+    throw new Exception("Database connection string is not set");
+
+// Configure Database Context and Logging Levels
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+    {
+        options.UseMySQL(connectionString)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    });
+}
+else if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+    {
+        options.UseMySQL(connectionString)
+            .LogTo(Console.WriteLine, LogLevel.Error)
+            .EnableDetailedErrors();
+    });
+}
+
+// Configure Dependency Injection
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderQueryService, OrderQueryService>();
+builder.Services.AddScoped<IOrderCommandService, OrderCommandService>();
+
+/////////////////////////End Database Configuration/////////////////////////
 var app = builder.Build();
+
+// Verify Database Objects are created
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    context.Database.EnsureCreated(); // Handle migrations
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -15,30 +70,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
+app.UseAuthorization();
+app.MapControllers();
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
