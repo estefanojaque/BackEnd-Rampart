@@ -3,6 +3,8 @@ using BackEnd.UserProfile;
 using BackEnd.Dishes;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
+using BackEnd.Posts;
+using BackEnd.Posts.Domain.Model.Aggregates;
 
 namespace BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
 
@@ -19,6 +21,13 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         base.OnModelCreating(builder);
         builder.UseSnakeCaseNamingConvention();
         
+        // Configuración para Post
+        builder.Entity<Post>().ToTable("post");
+        builder.Entity<Post>().HasKey(up => up.id);
+        builder.Entity<Post>().Property(up => up.dishId).IsRequired().HasColumnName("dishId");
+        builder.Entity<Post>().Property(up => up.publishDate).IsRequired().HasColumnName("publishDate");
+        builder.Entity<Post>().Property(up => up.stock).IsRequired().HasColumnName("stock");
+      
         // Configuración para Order
         builder.Entity<Order>().ToTable("order"); // Especifica el nombre de la tabla
         builder.Entity<Order>().HasKey(o => o.Id);
@@ -102,4 +111,5 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     public DbSet<ProfileData> UserProfiles { get; set; }
     public DbSet<DishData> Dishes { get; set; } // Agrega el DbSet para DishData
     public DbSet<Order> Orders { get; set; }
+    public DbSet<Post> Posts { get; set; }
 }
