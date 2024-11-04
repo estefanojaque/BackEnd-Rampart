@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform.UserProfile;
+﻿namespace BackEnd.UserProfile;
 
 /// <summary>
 /// Query to retrieve a user's preferences by their unique identifier

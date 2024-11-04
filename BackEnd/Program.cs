@@ -4,7 +4,6 @@ using BackEnd.Orders.Domain.Repositories;
 using BackEnd.Orders.Domain.Services;
 using BackEnd.Orders.Infrastructure.Repositories;
 using BackEnd.Shared.Domain.Repositories;
-using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
 using BackEnd.Dishes;

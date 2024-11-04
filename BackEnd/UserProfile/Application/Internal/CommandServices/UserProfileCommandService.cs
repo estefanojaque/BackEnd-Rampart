@@ -1,7 +1,7 @@
-﻿using catch_up_platform.UserProfile.Domain.Services;
-using catch_up_platform.Shared.Domain.Repositories;
+﻿using BackEnd.UserProfile.Domain.Services;
+using BackEnd.Shared.Domain.Repositories;
 
-namespace catch_up_platform.UserProfile.Application.Internal.CommandServices
+namespace BackEnd.UserProfile.Application.Internal.CommandServices
 {
     public class UserProfileCommandService : IUserProfileCommandService
     {

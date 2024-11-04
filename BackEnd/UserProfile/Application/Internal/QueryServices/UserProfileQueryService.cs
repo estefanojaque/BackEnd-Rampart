@@ -1,6 +1,6 @@
-﻿using catch_up_platform.UserProfile.Domain.Services;
+﻿using BackEnd.UserProfile.Domain.Services;
 
-namespace catch_up_platform.UserProfile.Application.Internal.QueryServices
+namespace BackEnd.UserProfile.Application.Internal.QueryServices
 {
     public class UserProfileQueryService : IUserProfileQueryService
     {

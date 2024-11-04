@@ -1,8 +1,8 @@
-﻿using catch_up_platform.Shared.Infrastructure.Persistence.EFC.Configuration;
-using catch_up_platform.Shared.Infrastructure.Persistence.EFC.Repositories;
+﻿using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace catch_up_platform.UserProfile.Infrastructure.Repositories;
+namespace BackEnd.UserProfile.Infrastructure.Repositories;
 
 public class UserProfileRepository(AppDbContext context) 
     : BaseRepository<ProfileData>(context), IUserProfileRepository

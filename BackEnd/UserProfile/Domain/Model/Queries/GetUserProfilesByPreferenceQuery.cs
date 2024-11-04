@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform.UserProfile;
+﻿namespace BackEnd.UserProfile;
 
 /// <summary>
 /// Query to get user profiles by a specific preference

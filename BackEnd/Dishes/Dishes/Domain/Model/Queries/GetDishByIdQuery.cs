@@ -1,3 +1,3 @@
-﻿namespace catch_up_platform.Dishes;
+﻿namespace BackEnd.Dishes;
 
 public record GetDishByIdQuery(int DishId);

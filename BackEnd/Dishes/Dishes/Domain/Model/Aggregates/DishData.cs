@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace catch_up_platform.Dishes
+namespace BackEnd.Dishes
 {
     public class DishData
     {

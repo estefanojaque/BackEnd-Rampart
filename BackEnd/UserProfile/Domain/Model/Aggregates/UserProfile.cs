@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-namespace catch_up_platform.UserProfile
+namespace BackEnd.UserProfile
 
 {
     public class ProfileData

@@ -1,6 +1,6 @@
-﻿using catch_up_platform.Dishes.Interfaces.REST.Resource;
+﻿using BackEnd.Dishes.Interfaces.REST.Resource;
 
-namespace catch_up_platform.Dishes.Interfaces.REST.Transform;
+namespace BackEnd.Dishes.Interfaces.REST.Transform;
 
 public class CreateDishCommandFromResourceAssembler
 {
