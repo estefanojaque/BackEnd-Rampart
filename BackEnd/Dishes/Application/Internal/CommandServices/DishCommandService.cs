@@ -1,7 +1,7 @@
-﻿using catch_up_platform.Dishes.Domain.Services;
-using catch_up_platform.Shared.Domain.Repositories;
+﻿using BackEnd.Dishes.Domain.Services;
+using BackEnd.Shared.Domain.Repositories;
 
-namespace catch_up_platform.Dishes.Application.Internal.CommandServices
+namespace BackEnd.Dishes.Application.Internal.CommandServices
 {
     public class DishCommandService : IDishCommandService
     {

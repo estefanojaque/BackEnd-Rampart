@@ -1,6 +1,6 @@
-﻿using catch_up_platform.Dishes.Domain.Services;
+﻿using BackEnd.Dishes.Domain.Services;
 
-namespace catch_up_platform.Dishes.Application.Internal.QueryServices
+namespace BackEnd.Dishes.Application.Internal.QueryServices
 {
     public class DishQueryService : IDishQueryService
     {

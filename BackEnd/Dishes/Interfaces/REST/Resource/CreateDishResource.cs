@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform.Dishes.Interfaces.REST.Resource;
+﻿namespace BackEnd.Dishes.Interfaces.REST.Resource;
 
 /// <summary>
 /// Resource for creating a new dish.

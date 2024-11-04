@@ -1,6 +1,6 @@
-﻿using catch_up_platform.Shared.Domain.Repositories;
+﻿using BackEnd.Shared.Domain.Repositories;
 
-namespace catch_up_platform.Dishes;
+namespace BackEnd.Dishes;
 
 /// <summary>
 /// Repository interface for dish entity

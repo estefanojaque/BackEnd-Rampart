@@ -1,8 +1,8 @@
-﻿using catch_up_platform.Shared.Infrastructure.Persistence.EFC.Configuration;
-using catch_up_platform.Shared.Infrastructure.Persistence.EFC.Repositories;
+﻿using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace catch_up_platform.Dishes.Infrastructure.Repositories
+namespace BackEnd.Dishes.Infrastructure.Repositories
 {
     public class DishRepository(AppDbContext context)
         : BaseRepository<DishData>(context), IDishRepository
