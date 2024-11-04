@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace catch_up_platform_firtness.Shared.Infrastructure;
+namespace BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration;
 
 public class KebabCaseRouteNamingConvention : IControllerModelConvention
 {

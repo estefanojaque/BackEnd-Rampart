@@ -1,4 +1,4 @@
-﻿namespace catch_up_platform_firtness.Shared.Domain.Repositories;
+﻿namespace BackEnd.Shared.Domain.Repositories;
 
 
 /// <summary>

@@ -1,9 +1,8 @@
-﻿
-using catch_up_platform_firtness.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+﻿using catch_up_platform_firtness.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace catch_up_platform_firtness.Shared.Infrastructure.Persistence.EFC.Configuration;
+namespace BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 public class AppDbContext (DbContextOptions options) : DbContext(options)
 {
