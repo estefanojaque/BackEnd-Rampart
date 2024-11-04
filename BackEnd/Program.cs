@@ -1,4 +1,3 @@
-
 using BackEnd.Orders.Application.Internal.CommandServices;
 using BackEnd.Orders.Application.Internal.QueryServices;
 using BackEnd.Orders.Domain.Repositories;
@@ -8,6 +7,19 @@ using BackEnd.Shared.Domain.Repositories;
 using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
+using BackEnd.Dishes;
+using BackEnd.Dishes.Application.Internal.CommandServices; // Asegúrate de tener las referencias correctas
+using BackEnd.Dishes.Application.Internal.QueryServices;
+using BackEnd.Dishes.Domain.Services;
+using BackEnd.Shared.Domain.Repositories;
+using BackEnd.Shared.Infrastructure;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
+using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
+using BackEnd.UserProfile;
+using BackEnd.UserProfile.Application.Internal.QueryServices;
+using BackEnd.UserProfile.Application.Internal.CommandServices;
+using BackEnd.UserProfile.Domain.Services;
+
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,6 +63,17 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderQueryService, OrderQueryService>();
 builder.Services.AddScoped<IOrderCommandService, OrderCommandService>();
 
+// Configure Dependency Injection for UserProfile
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddScoped<IUserProfileQueryService, UserProfileQueryService>();
+builder.Services.AddScoped<IUserProfileCommandService, UserProfileCommandService>();
+
+// Configure Dependency Injection for Dishes
+builder.Services.AddScoped<IDishRepository, DishRepository>(); // Asegúrate de que el repositorio esté implementado
+builder.Services.AddScoped<IDishQueryService, DishQueryService>();
+builder.Services.AddScoped<IDishCommandService, DishCommandService>();
+
 /////////////////////////End Database Configuration/////////////////////////
 var app = builder.Build();
 
@@ -60,6 +83,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
     context.Database.EnsureCreated(); // Handle migrations
+    context.Database.Migrate(); // Handle migrations
 }
 
 // Configure the HTTP request pipeline.

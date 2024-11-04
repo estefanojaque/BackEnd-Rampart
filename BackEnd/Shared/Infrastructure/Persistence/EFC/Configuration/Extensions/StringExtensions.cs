@@ -1,6 +1,6 @@
-﻿using Humanizer;
+using Humanizer;
 
-namespace catch_up_platform_firtness.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+namespace catch_up_platform.Shared.Infrastructure.Persistence;
 
 public static class StringExtensions
 {
@@ -12,7 +12,7 @@ public static class StringExtensions
         {
             if (!e.MoveNext()) yield break;
             yield return char.ToLower(e.Current);
-            
+
             while (e.MoveNext())
                 if (char.IsUpper(e.Current))
                 {
@@ -24,12 +24,12 @@ public static class StringExtensions
                     yield return e.Current;
                 }
         }
-
-        
-        
+     
     }
+
     public static string ToPlural(this string text)
     {
         return text.Pluralize(false);
     }
+    
 }
