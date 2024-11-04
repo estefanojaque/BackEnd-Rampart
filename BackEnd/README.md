@@ -6,8 +6,6 @@ Este archivo contiene las instrucciones para configurar manualmente la base de d
 
 Conéctate a MySQL y ejecuta los siguientes comandos para crear la base de datos y las tablas necesarias.
 
-### Crear la Base de Datos
-
 ```sql
 CREATE DATABASE BackEnd;
 USE BackEnd;
@@ -46,3 +44,30 @@ CREATE TABLE dishes (
     preparation_steps_json TEXT NOT NULL,
     favorite BOOLEAN NOT NULL
 );
+```
+
+## Configuración de Conexión a la Base de Datos
+
+Para que la aplicación se conecte correctamente a la base de datos, es necesario configurar el archivo appsettings.json con la cadena de conexión adecuada.
+
+Abre el archivo appsettings.json en el directorio raíz de tu proyecto backend.
+Ubica la sección "ConnectionStrings".
+Modifica la cadena de conexión para reflejar tus credenciales de MySQL. En el campo "Password", reemplaza con tu contraseña de MySQL Workbench.
+Ejemplo de configuración en appsettings.json:
+
+```json
+{
+"ConnectionStrings": {
+"DefaultConnection": "Server=localhost;Database=catch-up-platform-ws51;User=root;Password=TU_CONTRASEÑA;"
+},
+"Logging": {
+"LogLevel": {
+"Default": "Information",
+"Microsoft.AspNetCore": "Warning"
+}
+},
+"AllowedHosts": "*"
+}
+```
+
+Nota: Asegúrate de reemplazar TU_CONTRASEÑA con tu contraseña real de MySQL.
