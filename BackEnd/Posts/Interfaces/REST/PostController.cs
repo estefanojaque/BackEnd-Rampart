@@ -83,7 +83,8 @@ public class PostController(
 
         return NoContent();
     }
-    
+
+    [HttpGet("{id}")]
     public async Task<ActionResult> GetPostById(int id)
     {
         var getOrderById = new GetPostByIdQuery(id);
