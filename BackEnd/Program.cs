@@ -18,7 +18,11 @@ using BackEnd.UserProfile;
 using BackEnd.UserProfile.Application.Internal.QueryServices;
 using BackEnd.UserProfile.Application.Internal.CommandServices;
 using BackEnd.UserProfile.Domain.Services;
-
+using BackEnd.Posts.Application.Internal.CommandServices;
+using BackEnd.Posts.Application.Internal.QueryServices;
+using BackEnd.Posts.Domain.Repositories;
+using BackEnd.Posts.Domain.Services;
+using BackEnd.Posts.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -86,10 +90,14 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rampart API V1");
+        c.RoutePrefix = string.Empty; // Esto hace que Swagger esté disponible en la raíz
+    });
 }
 
 app.UseHttpsRedirection();
