@@ -23,6 +23,11 @@ using BackEnd.Posts.Application.Internal.QueryServices;
 using BackEnd.Posts.Domain.Repositories;
 using BackEnd.Posts.Domain.Services;
 using BackEnd.Posts.Infrastructure.Repositories;
+using BackEnd.Chefs.Application.Internal.CommandServices; // Agregado
+using BackEnd.Chefs.Application.Internal.QueryServices;   // Agregado
+using BackEnd.Chefs.Domain.Repositories;                  // Agregado
+using BackEnd.Chefs.Domain.Services;                     // Agregado
+using BackEnd.Chefs.Infrastructure.Repositories;           // Agregado
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,6 +81,11 @@ builder.Services.AddScoped<IUserProfileCommandService, UserProfileCommandService
 builder.Services.AddScoped<IDishRepository, DishRepository>(); // Asegúrate de que el repositorio esté implementado
 builder.Services.AddScoped<IDishQueryService, DishQueryService>();
 builder.Services.AddScoped<IDishCommandService, DishCommandService>();
+
+// Configure Dependency Injection for Chefs (Agregado)
+builder.Services.AddScoped<IChefRepository, ChefRepository>();
+builder.Services.AddScoped<IChefQueryService, ChefQueryService>();
+builder.Services.AddScoped<IChefCommandService, ChefCommandService>();
 
 /////////////////////////End Database Configuration/////////////////////////
 var app = builder.Build();
