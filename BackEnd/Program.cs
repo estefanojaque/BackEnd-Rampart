@@ -6,14 +6,7 @@ using BackEnd.Orders.Infrastructure.Repositories;
 using BackEnd.Shared.Domain.Repositories;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
-using BackEnd.Dishes;
-using BackEnd.Dishes.Application.Internal.CommandServices; // Asegúrate de tener las referencias correctas
-using BackEnd.Dishes.Application.Internal.QueryServices;
-using BackEnd.Dishes.Domain.Services;
-using BackEnd.Shared.Domain.Repositories;
 using BackEnd.Shared.Infrastructure;
-using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
-using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
 using BackEnd.UserProfile;
 using BackEnd.UserProfile.Application.Internal.QueryServices;
 using BackEnd.UserProfile.Application.Internal.CommandServices;
@@ -27,65 +20,85 @@ using BackEnd.Chefs.Application.Internal.CommandServices; // Agregado
 using BackEnd.Chefs.Application.Internal.QueryServices;   // Agregado
 using BackEnd.Chefs.Domain.Repositories;                  // Agregado
 using BackEnd.Chefs.Domain.Services;                     // Agregado
-using BackEnd.Chefs.Infrastructure.Repositories;           // Agregado
+using BackEnd.Chefs.Infrastructure.Repositories;
+using Backend.Dishes.Application.Internal.CommandService;
+using Backend.Dishes.Application.Internal.QueryServices;
+using Backend.Dishes.Domain.Repositories;
+using Backend.Dishes.Domain.services;
+using Backend.Dishes.Infrastructure.Persistence.EFC.Repositories; // Agregado
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//configure Lower Case URLs
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+// Configure Kebab Case Route Naming Convention
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
+builder.Services.AddSwaggerGen();
 
 /////////////////////////Begin Database Configuration/////////////////////////
+// Add DbContext
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Verify Database Connection string
-if (string.IsNullOrWhiteSpace(connectionString))
-    throw new Exception("Database connection string is not set");
+if (connectionString is null)
+{
+    throw new InvalidOperationException("Connection string not found");
+}
 
 // Configure Database Context and Logging Levels
-if (builder.Environment.IsDevelopment())
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    builder.Services.AddDbContext<AppDbContext>(options =>
+    if (builder.Environment.IsDevelopment())
     {
         options.UseMySQL(connectionString)
+            .LogTo(Console.WriteLine, LogLevel.Information)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
-    });
-}
-else if (builder.Environment.IsProduction())
-{
-    builder.Services.AddDbContext<AppDbContext>(options =>
+    }
+    else
     {
-        options.UseMySQL(connectionString)
-            .LogTo(Console.WriteLine, LogLevel.Error)
-            .EnableDetailedErrors();
-    });
-}
+        if (builder.Environment.IsProduction())
+        {
+            options.UseMySQL(connectionString)
+                .LogTo(Console.WriteLine, LogLevel.Error);
+        }
+    }
+});
 
 // Configure Dependency Injection
+// Bounded Context Injection Configuration for Business
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Order Bounded Context
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderQueryService, OrderQueryService>();
 builder.Services.AddScoped<IOrderCommandService, OrderCommandService>();
 
-// Configure Dependency Injection for UserProfile
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// UserProfile Bounded Context
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddScoped<IUserProfileQueryService, UserProfileQueryService>();
 builder.Services.AddScoped<IUserProfileCommandService, UserProfileCommandService>();
 
-// Configure Dependency Injection for Dishes
-builder.Services.AddScoped<IDishRepository, DishRepository>(); // Asegúrate de que el repositorio esté implementado
+// Dish Bounded Context
+builder.Services.AddScoped<IDishRepository, DishRepository>();
 builder.Services.AddScoped<IDishQueryService, DishQueryService>();
 builder.Services.AddScoped<IDishCommandService, DishCommandService>();
 
-// Configure Dependency Injection for Chefs (Agregado)
+// Chef Bounded Context
 builder.Services.AddScoped<IChefRepository, ChefRepository>();
 builder.Services.AddScoped<IChefQueryService, ChefQueryService>();
 builder.Services.AddScoped<IChefCommandService, ChefCommandService>();
+
+// Post Bounded Context
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IPostQueryService, PostQueryService>();
+builder.Services.AddScoped<IPostCommandService, PostCommandService>();
 
 /////////////////////////End Database Configuration/////////////////////////
 var app = builder.Build();
@@ -99,6 +112,7 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate(); // Handle migrations
 }
 
+//***********************(Deploy backend)************************
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
@@ -107,8 +121,9 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "BackEnd v1");
         c.RoutePrefix = string.Empty; // Esto hace que Swagger esté disponible en la raíz
-    });
+    });
 }
+//***********************(Deploy backend)************************
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

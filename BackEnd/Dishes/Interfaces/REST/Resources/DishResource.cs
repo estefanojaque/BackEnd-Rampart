@@ -1,7 +1,8 @@
-﻿namespace Backend.Dishes.Domain.Model.Commands;
+﻿namespace Backend.Dishes.Interfaces.REST.Resources;
 
-public record CreateDishCommand(
-    int ChefId,                      // ID del chef
+public record DishResource(
+    int Id,                          // Identificador del platillo
+    int ChefId,                      // Identificador del chef
     string NameOfDish,              // Nombre del platillo
     List<string> Ingredients,        // Lista de ingredientes
     List<string> PreparationSteps,   // Pasos de preparación

@@ -1,30 +1,20 @@
-﻿using BackEnd.Dishes.Domain.Services;
+﻿using Backend.Dishes.Domain.Model.Aggregates;
+using Backend.Dishes.Domain.Model.Queries;
+using Backend.Dishes.Domain.Repositories;
+using Backend.Dishes.Domain.services;
 
-namespace BackEnd.Dishes.Application.Internal.QueryServices
+namespace Backend.Dishes.Application.Internal.QueryServices;
+
+public class DishQueryService(IDishRepository dishRepository)
+    : IDishQueryService
 {
-    public class DishQueryService : IDishQueryService
+    public async Task<IEnumerable<Dish>> Handle(GetAllDishesQuery query)
     {
-        private readonly IDishRepository _dishRepository;
+        return await dishRepository.ListAsync();
+    }
 
-        public DishQueryService(IDishRepository dishRepository)
-        {
-            _dishRepository = dishRepository;
-        }
-
-        // Método para obtener todos los platos
-        public async Task<IEnumerable<DishData>> Handle(GetAllDishesQuery query)
-        {
-            return await _dishRepository.GetAllAsync();
-        }
-
-        // Método para obtener un plato por ID
-        public async Task<DishData> Handle(GetDishByIdQuery query)
-        {
-            var dish = await _dishRepository.FindByIdAsync(query.DishId);
-            if (dish == null)
-                throw new Exception("Dish not found."); // Lanza excepción si no se encuentra el plato
-
-            return dish;
-        }
+    public async Task<Dish?> Handle(GetDishByIdQuery query)
+    {
+        return await dishRepository.FindByIdAsync(query.Id);
     }
 }

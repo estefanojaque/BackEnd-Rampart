@@ -1,21 +1,29 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Backend.Dishes.Domain.Model.Aggregates;
+using Backend.Dishes.Domain.Model.Queries;
 
-namespace BackEnd.Dishes.Domain.Services
+namespace Backend.Dishes.Domain.services;
+
+public interface IDishQueryService 
 {
-    public interface IDishQueryService
-    {
-        /// <summary>
-        /// Retrieves a dish by its ID.
-        /// </summary>
-        /// <param name="query">GetDishByIdQuery query</param>
-        /// <returns>The Dish or null if not found</returns>
-        Task<DishData?> Handle(GetDishByIdQuery query);
-
-        /// <summary>
-        /// Retrieves all dishes.
-        /// </summary>
-        /// <returns>A list of Dishes</returns>
-        Task<IEnumerable<DishData>> Handle(GetAllDishesQuery query);
-    }
+    /// <summary>
+    /// Handle get all dishes query
+    /// </summary>
+    /// <param name="query">
+    /// The <see cref="GetAllDishesQuery"/> query
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="Dish"/> objects
+    /// </returns>
+    Task<IEnumerable<Dish>> Handle(GetAllDishesQuery query);
+    
+    /// <summary>
+    ///  Handle get dish by id query
+    /// </summary>
+    /// <param name="query">
+    /// The <see cref="GetDishByIdQuery"/> query
+    /// </param>
+    /// <returns>
+    ///  A <see cref="Dish"/> if found, otherwise null    
+    /// </returns>
+    Task<Dish> Handle(GetDishByIdQuery query);
 }

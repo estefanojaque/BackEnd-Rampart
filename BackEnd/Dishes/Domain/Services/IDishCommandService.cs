@@ -1,32 +1,40 @@
-﻿namespace BackEnd.Dishes.Domain.Services
+﻿using Backend.Dishes.Domain.Model.Aggregates;
+using Backend.Dishes.Domain.Model.Commands;
+
+namespace Backend.Dishes.Domain.services;
+
+public interface IDishCommandService
 {
-    public interface IDishCommandService
-    {
-        /// <summary>
-        /// Handles the CreateDishCommand.
-        /// </summary>
-        /// <remarks>
-        /// This method will handle the CreateDishCommand and return the created Dish.
-        /// </remarks>
-        /// <param name="command">CreateDishCommand command</param>
-        /// <returns>The created Dish or null if the operation failed.</returns>
-        Task<DishData?> Handle(CreateDishCommand command);
-
-        /// <summary>
-        /// Handles the UpdateDishCommand.
-        /// </summary>
-        /// <remarks>
-        /// This method will update the Dish identified by dishId.
-        /// </remarks>
-        /// <param name="command">UpdateDishCommand command</param>
-        /// <returns>The updated Dish or null if the operation failed.</returns>
-        Task<DishData?> Handle(UpdateDishCommand command);
-
-        /// <summary>
-        /// Deletes the dish identified by the specified ID.
-        /// </summary>
-        /// <param name="dishId">The ID of the dish to delete.</param>
-        /// <returns>A Task representing the asynchronous operation, which returns true if the dish was deleted successfully, otherwise false.</returns>
-        Task<bool> DeleteDishAsync(int dishId);
-    }
+    /// <summary>
+    /// Handle create dish command
+    /// </summary>
+    /// <param name="command">
+    /// A <see cref="CreateDishCommand"/> command
+    /// </param>
+    /// <returns>
+    /// The <see cref="Dish"/>
+    /// </returns>
+    Task<Dish?> Handle(CreateDishCommand command);
+    
+    /// <summary>
+    /// Handle update dish command
+    /// </summary>
+    /// <param name="command">
+    /// A <see cref="UpdateDishCommand"/> command
+    /// </param>
+    /// <returns>
+    /// The <see cref="Dish"/>
+    /// </returns>
+    Task<Dish?> Handle(UpdateDishCommand command);
+    
+    /// <summary>
+    /// Handle delete dish command
+    /// </summary>
+    /// <param name="id">
+    /// A <see cref="DeleteDishCommand"/> id
+    /// </param>
+    /// <returns>
+    /// The <see cref="bool"/>
+    /// </returns>
+    Task<bool> DeleteDishCommand (int id);
 }

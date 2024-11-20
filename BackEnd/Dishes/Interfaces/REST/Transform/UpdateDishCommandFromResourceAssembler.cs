@@ -3,15 +3,17 @@ using Backend.Dishes.Interfaces.REST.Resources;
 
 namespace Backend.Dishes.Interfaces.REST.Transform;
 
-public class CreateDishCommandFromResourceAssembler
+public class UpdateDishCommandFromResourceAssembler
 {
-    public static CreateDishCommand ToCommandFromResource(CreateDishResource resource)
+    public static UpdateDishCommand ToCommandFromResource(UpdateDishResource resource)
     {
-        return new CreateDishCommand(
+        return new UpdateDishCommand(
+            resource.Id,
             resource.ChefId,
             resource.NameOfDish,
             resource.Ingredients,
-            resource.PreparationSteps
+            resource.PreparationSteps,
+            resource.Favorite
         );
     }
 }
