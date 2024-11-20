@@ -1,3 +1,3 @@
-﻿namespace BackEnd.Dishes;
+﻿namespace Backend.Dishes.Domain.Model.Commands;
 
-public record DeleteDishCommand(int DishId);
+public record DeleteDishCommand(int Id);

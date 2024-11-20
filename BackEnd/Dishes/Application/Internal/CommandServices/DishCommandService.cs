@@ -1,114 +1,66 @@
-﻿using BackEnd.Dishes.Domain.Services;
+﻿using Backend.Dishes.Domain.Model.Aggregates;
+using Backend.Dishes.Domain.Model.Commands;
+using Backend.Dishes.Domain.Repositories;
+using Backend.Dishes.Domain.services;
 using BackEnd.Shared.Domain.Repositories;
 
-namespace BackEnd.Dishes.Application.Internal.CommandServices
+namespace Backend.Dishes.Application.Internal.CommandService;
+
+public class DishCommandService(IDishRepository dishRepository, IUnitOfWork unitOfWork)
+    : IDishCommandService
 {
-    public class DishCommandService : IDishCommandService
+    public async Task<Dish?> Handle(CreateDishCommand command)
     {
-        private readonly IDishRepository _dishRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public DishCommandService(IDishRepository dishRepository, IUnitOfWork unitOfWork)
+        var dish = new Dish(command);
+        try
         {
-            _dishRepository = dishRepository;
-            _unitOfWork = unitOfWork;
-        }
-
-        public async Task<DishData> Handle(CreateDishCommand command)
-        {
-            var dish = new DishData(command);
-
-            try
-            {
-                await _dishRepository.CreateAsync(dish);
-                await _unitOfWork.CompleteAsync();
-            }
-            catch (Exception e)
-            {
-                // logger.LogError(e, "Error creating dish.");
-                throw new Exception("Error creating dish.", e);
-            }
-
+            await dishRepository.AddAsync(dish);
+            await unitOfWork.CompleteAsync();
             return dish;
         }
-
-        public async Task<DishData?> Handle(UpdateDishCommand command)
+        catch (Exception e)
         {
-            var dish = await _dishRepository.FindByIdAsync(command.DishId);
-            if (dish == null)
-            {
-                throw new Exception($"Dish with ID {command.DishId} not found.");
-            }
-
-            // Variable para rastrear si hubo cambios
-            bool hasChanges = false;
-            
-            if (!string.IsNullOrEmpty(command.NameOfDish) && command.NameOfDish != dish.NameOfDish)
-            {
-                dish.NameOfDish = command.NameOfDish;
-                hasChanges = true;
-            }
-
-            if (command.Ingredients != null && !command.Ingredients.SequenceEqual(dish.Ingredients))
-            {
-                dish.Ingredients = command.Ingredients;
-                hasChanges = true;
-            }
-
-            if (command.PreparationSteps != null && !command.PreparationSteps.SequenceEqual(dish.PreparationSteps))
-            {
-                dish.PreparationSteps = command.PreparationSteps;
-                hasChanges = true;
-            }
-
-            if (command.Favorite.HasValue && command.Favorite.Value != dish.Favorite)
-            {
-                dish.Favorite = command.Favorite.Value;
-                hasChanges = true;
-            }
-
-            // Solo guarda si ha habido cambios
-            if (hasChanges)
-            {
-                try
-                {
-                    await _dishRepository.UpdateAsync(dish);
-                    await _unitOfWork.CompleteAsync();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error updating dish: {e.Message}");
-                    throw new Exception("Error updating dish.", e);
-                }
-
-                return dish; // Devuelve el plato actualizado
-            }
-            else
-            {
-                // No se realizaron cambios
-                return null;
-            }
+            return null;
         }
+    }
 
+    public async Task<Dish?> Handle(UpdateDishCommand command)
+    {
+        var dish = await dishRepository.FindByIdAsync(command.Id);
+        if (dish == null) return null;
 
-        public async Task<bool> DeleteDishAsync(int dishId)
+        dish.ChefId = command.ChefId;
+        dish.NameOfDish = command.NameOfDish;
+        dish.Ingredients = command.Ingredients;
+        dish.PreparationSteps = command.PreparationSteps;
+        dish.Favorite = command.Favorite;
+
+        try
         {
-            var dish = await _dishRepository.FindByIdAsync(dishId);
-            if (dish == null)
-                return false;
+            dishRepository.Update(dish);
+            await unitOfWork.CompleteAsync();
+            return dish;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
 
-            try
-            {
-                await _dishRepository.DeleteAsync(dishId);
-                await _unitOfWork.CompleteAsync();
-            }
-            catch (Exception e)
-            {
-                // logger.LogError(e, "Error deleting dish.");
-                throw new Exception("Error deleting dish.", e);
-            }
+    public async Task<bool> DeleteDishCommand(int id)
+    {
+        var dish = await dishRepository.FindByIdAsync(id);
+        if (dish == null) return false;
 
+        try
+        {
+            dishRepository.Remove(dish);
+            await unitOfWork.CompleteAsync();
             return true;
+        }
+        catch (Exception e)
+        {
+            return false;
         }
     }
 }
