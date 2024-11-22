@@ -1,8 +1,9 @@
 ﻿namespace BackEnd.Chefs.Interfaces.REST.Resource;
 
-public record CreateChefResource(
+public record CreateChefResource
+(
     string Name,
-    double InitialRating,
-    bool IsFavorite,
-    string Gender
+    string Gender,
+    double Rating,
+    bool IsFavorite
 );
