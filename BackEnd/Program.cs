@@ -176,14 +176,10 @@ using (var scope = app.Services.CreateScope())
 
 //***********************(Deploy backend)************************
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BackEnd v1");
-        c.RoutePrefix = string.Empty; // Esto hace que Swagger esté disponible en la raíz
-    });
+    app.UseSwaggerUI();
 }
 //***********************(Deploy backend)************************
 
