@@ -1,115 +1,89 @@
 ﻿using System.Net.Mime;
-using BackEnd.Dishes.Domain.Services;
-using BackEnd.Dishes.Interfaces.REST.Resource;
+using BackEnd.Dishes.Domain.Model.Commands;
+using BackEnd.Dishes.Domain.Model.Queries;
+using BackEnd.Dishes.Domain.services;
+using BackEnd.Dishes.Interfaces.REST.Resources;
 using BackEnd.Dishes.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace BackEnd.Dishes.Interfaces.REST
+namespace BackEnd.Dishes.Interfaces.REST;
+
+[ApiController]
+[Route("api/v1/[controller]")]
+[Produces(MediaTypeNames.Application.Json)]
+[SwaggerTag("Create, read, update and delete dishes")]
+public class DishController(IDishQueryService dishQueryService,
+    IDishCommandService dishCommandService): ControllerBase
 {
-    [ApiController]
-    [Route("/api/v1/dishes")]
-    [Produces(MediaTypeNames.Application.Json)]
-    [Tags("Dishes")]
-    public class DishController : ControllerBase
+    [HttpGet("{dishId:int}")]
+    public async Task<IActionResult> GetDishById(int dishId)
     {
-        private readonly IDishCommandService _dishCommandService;
-        private readonly IDishQueryService _dishQueryService;
-
-        public DishController(
-            IDishCommandService dishCommandService,
-            IDishQueryService dishQueryService)
+        var getDishByIdQuery = new GetDishByIdQuery(dishId);
+        var dish = await dishQueryService.Handle(getDishByIdQuery);
+        if (dish == null)
         {
-            _dishCommandService = dishCommandService;
-            _dishQueryService = dishQueryService;
+            return NotFound();
+        }
+        var dishResource = DishResourceFromEntityAssembler.ToResourceFromEntity(dish);
+        return Ok(dishResource);
+    }
+    
+    [HttpGet]
+    [SwaggerOperation("Get all dishes")]
+    [SwaggerResponse(201, "All dishes", typeof(IEnumerable<DishResource>))]
+    [SwaggerResponse(400, "Bad request")]
+    public async Task<IActionResult> GetAllDishes()
+    {
+        var getAllDishesQuery = new GetAllDishesQuery();
+        var dishes = await dishQueryService.Handle(getAllDishesQuery);
+        var dishResources = dishes.Select(DishResourceFromEntityAssembler
+            .ToResourceFromEntity);
+        return Ok(dishResources);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateDish(CreateDishResource resource)
+    {
+        var createDishCommand = CreateDishCommandFromResourceAssembler
+            .ToCommandFromResource(resource);
+        var dish = await dishCommandService.Handle(createDishCommand);
+        if (dish == null)
+        {
+            return BadRequest();
+        }
+        var dishResource = DishResourceFromEntityAssembler.ToResourceFromEntity(dish);
+        return CreatedAtAction(nameof(GetDishById), new { dishId = dish.Id }, dishResource);
+    }
+    
+    [HttpPut("{dishId:int}")]
+    public async Task<IActionResult> UpdateDish(int dishId, UpdateDishResource resource)
+    {
+        if (dishId != resource.Id)
+        {
+            return BadRequest("Dish ID mismatch");
         }
 
-        [HttpPost]
-        [SwaggerOperation(
-            Summary = "Create a dish",
-            Description = "Create a dish with the provided information",
-            OperationId = "CreateDish")]
-        [SwaggerResponse(201, "The dish was created", typeof(DishResource))]
-        [SwaggerResponse(400, "The dish was not created")]
-        public async Task<ActionResult> CreateDish([FromBody] CreateDishResource resource)
+        var updateDishCommand = UpdateDishCommandFromResourceAssembler
+            .ToCommandFromResource(resource);
+        var dish = await dishCommandService.Handle(updateDishCommand);
+        if (dish == null)
         {
-            var command = CreateDishCommandFromResourceAssembler.ToCommandFromResource(resource);
-            var result = await _dishCommandService.Handle(command);
-            if (result is null)
-            {
-                return BadRequest("Dish could not be created.");
-            }
-            return CreatedAtAction(nameof(GetDishById), new { id = result.Id },
-                DishResourceFromEntityAssembler.ToResourceFromEntity(result));
+            return NotFound();
         }
-
-        [HttpGet("{id}")]
-        [SwaggerOperation(
-            Summary = "Get a dish by ID",
-            Description = "Retrieve a dish using the specified ID",
-            OperationId = "GetDishById")]
-        [SwaggerResponse(200, "Dish retrieved successfully")]
-        [SwaggerResponse(404, "Dish not found")]
-        public async Task<ActionResult> GetDishById(int id)
+        var dishResource = DishResourceFromEntityAssembler.ToResourceFromEntity(dish);
+        return Ok(dishResource);
+    }
+    
+    [HttpDelete("{dishId:int}")]
+    public async Task<IActionResult> DeleteDish(int dishId)
+    {
+        var deleteDishCommand = new DeleteDishCommand(dishId);
+        var result = await dishCommandService.DeleteDishCommand(dishId);
+        if (!result)
         {
-            var query = new GetDishByIdQuery(id);
-            var result = await _dishQueryService.Handle(query);
-
-            if (result is null)
-            {
-                return NotFound($"Dish with ID {id} not found.");
-            }
-
-            var resource = DishResourceFromEntityAssembler.ToResourceFromEntity(result);
-            return Ok(resource);
+            return NotFound();
         }
-
-        [HttpPut("{id}")]
-        [SwaggerOperation(
-            Summary = "Update a dish",
-            Description = "Update a dish with the specified ID",
-            OperationId = "UpdateDish")]
-        [SwaggerResponse(200, "Dish updated successfully")]
-        [SwaggerResponse(404, "Dish not found")]
-        public async Task<IActionResult> UpdateDish(int id, [FromBody] UpdateDishCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("Invalid data.");
-            }
-
-            var updatedCommand = command with { DishId = id };
-
-            var result = await _dishCommandService.Handle(updatedCommand);
-
-            if (result == null)
-            {
-                // Indica que no hubo cambios realizados
-                return Ok(new { Message = "No changes made to the dish." });
-            }
-
-            return Ok(new { Message = "Dish updated successfully.", Dish = result });
-        }
-
-
-        [HttpDelete("{id}")]
-        [SwaggerOperation(
-            Summary = "Delete a dish",
-            Description = "Delete a dish with the specified ID",
-            OperationId = "DeleteDish")]
-        [SwaggerResponse(204, "Dish was successfully deleted")]
-        [SwaggerResponse(404, "Dish not found")]
-        public async Task<ActionResult> DeleteDish(int id)
-        {
-            // Llama al servicio de comandos para eliminar el platillo
-            var result = await _dishCommandService.DeleteDishAsync(id);
-
-            if (!result)
-            {
-                return NotFound($"Dish with ID {id} not found."); // Si no se encontró, retorna 404
-            }
-
-            return NoContent(); // Retorna 204 No Content si se elimina correctamente
-        }
+        return NoContent();
     }
 }

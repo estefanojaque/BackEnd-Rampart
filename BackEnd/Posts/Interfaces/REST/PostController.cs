@@ -19,10 +19,26 @@ public class PostController(
     IPostCommandService postCommandService,
     IPostQueryService postQueryService) : ControllerBase
 {
+    [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get all posts",
+        Description = "Get all posts",
+        OperationId = "GetAllPosts")]
+    [SwaggerResponse(201, "The posts were found", typeof(Post))]
+    [SwaggerResponse(400, "The post were not found")]
+    public async Task<ActionResult> GetAllPosts()
+    {
+        var query = new GetAllPostsQuery();
+        var posts = await postQueryService.Handle(query);
+        var postResources = posts.Select(PostResourceFromEntityAssembler.ToResourceFromEntity);
+        if (postResources is null) return NotFound();
+        return Ok(postResources);
+    }
+    
     [HttpPost]
     [SwaggerOperation(
         Summary = "Create a Post",
-        Description = "Create a post by providing a Dish, a Date and a Stock number",
+        Description = "Create a post by providing a Dish, a Date, a Stock number and a Price per Unit",
         OperationId = "CreatePost")]
     [SwaggerResponse(201, "The post was created", typeof(Post))]
     [SwaggerResponse(400, "The post was not created")]

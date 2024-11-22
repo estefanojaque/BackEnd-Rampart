@@ -1,4 +1,5 @@
-﻿using BackEnd.Dishes.Interfaces.REST.Resource;
+﻿using BackEnd.Dishes.Domain.Model.Commands;
+using BackEnd.Dishes.Interfaces.REST.Resources;
 
 namespace BackEnd.Dishes.Interfaces.REST.Transform;
 
@@ -7,11 +8,10 @@ public class CreateDishCommandFromResourceAssembler
     public static CreateDishCommand ToCommandFromResource(CreateDishResource resource)
     {
         return new CreateDishCommand(
-            resource.ChefName,  // Ahora ChefName es un string
+            resource.ChefId,
             resource.NameOfDish,
             resource.Ingredients,
-            resource.PreparationSteps,
-            resource.Favorite ?? false  // Usar valor predeterminado si es null
+            resource.PreparationSteps
         );
     }
 }

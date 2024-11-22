@@ -1,3 +1,3 @@
-﻿namespace BackEnd.Dishes;
+﻿namespace BackEnd.Dishes.Domain.Model.Queries;
 
-public record GetDishByIdQuery(int DishId);
+public record GetDishByIdQuery(int Id);

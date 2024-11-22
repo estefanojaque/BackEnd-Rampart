@@ -1,23 +1,19 @@
-﻿using BackEnd.Dishes.Interfaces.REST.Resource;
+﻿using BackEnd.Dishes.Domain.Model.Aggregates;
+using BackEnd.Dishes.Interfaces.REST.Resources;
 
-namespace BackEnd.Dishes.Interfaces.REST.Transform
+namespace BackEnd.Dishes.Interfaces.REST.Transform;
+
+public class DishResourceFromEntityAssembler
 {
-    public static class DishResourceFromEntityAssembler
+    public static DishResource ToResourceFromEntity(Dish entity)
     {
-        /// <summary>
-        /// Converts a DishData entity to a DishResource.
-        /// </summary>
-        /// <param name="entity">The DishData entity to convert.</param>
-        /// <returns>A DishResource representing the entity.</returns>
-        public static DishResource ToResourceFromEntity(DishData entity)
-        {
-            return new DishResource(
-                entity.ChefName,               // Nombre del chef
-                entity.NameOfDish,             // Nombre del platillo
-                entity.Ingredients,            // Lista de ingredientes
-                entity.PreparationSteps,       // Pasos de preparación
-                entity.Favorite                // Indica si es un platillo favorito
-            );
-        }
+        return new DishResource(
+            entity.Id,
+            entity.ChefId,
+            entity.NameOfDish,
+            entity.Ingredients,
+            entity.PreparationSteps,
+            entity.Favorite
+        );
     }
 }

@@ -10,6 +10,8 @@ public class Post
     public DateTime publishDate { get; set; }
     public int stock { get; set; }
     
+    public float pricePerUnit { get; set; }
+    
     protected Post() { }
 
     public Post(CreatePostCommand command)
@@ -17,5 +19,6 @@ public class Post
         dishId = command.dishId;
         publishDate = command.publishDate;
         stock = command.stock;
+        pricePerUnit = command.pricePerUnit;
     }
 }
