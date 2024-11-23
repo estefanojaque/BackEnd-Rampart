@@ -29,10 +29,11 @@ using BackEnd.IAM.Infrastructure.Persistence.EFC.Repositories;
 using BackEnd.IAM.Infrastructure.Pipeline.Extensions;
 using BackEnd.IAM.Infrastructure.Tokens.JWT.Configuration;
 using BackEnd.IAM.Infrastructure.Tokens.JWT.Services;
+using BackEnd.IAM.Interfaces.ACL;
 using BackEnd.IAM.Interfaces.ACL.Services;
 using BackEnd.IAM.Interfaces.ACL.Services.Services;
 using BackEnd.Orders.Infrastructure.Persistence.EFC.Repositories;
-using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration; 
+using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration; // Agregado
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -42,7 +43,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
 
-// Add Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Configure Database Context and Logging Levels
@@ -64,55 +64,55 @@ builder.Services.AddDbContext<AppDbContext>(
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(
-    c =>
-    {
-        c.SwaggerDoc("v1",
-            new OpenApiInfo
-            {
-                Title = "RideFind.Api",
-                Version = "v1",
-                Description = "RideFind Company API",
-                TermsOfService = new Uri("https://RideFind.com/tos"),
-                Contact = new OpenApiContact
-                {
-                    Name = "RideFind",
-                    Email = "RideFind.support@ridefind.com"
-                },
-                License = new OpenApiLicense
-                {
-                    Name = "Apache 2.0",
-                    Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")
-                }
-            });
-        c.EnableAnnotations();
-        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+builder.Services.AddSwaggerGen(options =>
+{
+        
+    options.SwaggerDoc("v1",
+        new OpenApiInfo
         {
-            In = ParameterLocation.Header,
-            Description = "Please enter token",
-            Name = "Authorization",
-            Type = SecuritySchemeType.Http,
-            BearerFormat = "JWT",
-            Scheme = "bearer"
-        });
-        c.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
+            Title = "ACME.LearningCenterPlatform.API",
+            Version = "v1",
+            Description = "ACME Learning Center Platform API",
+            TermsOfService = new Uri("https://acme-learning.com/tos"),
+            Contact = new OpenApiContact
             {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Id = "Bearer",
-                        Type = ReferenceType.SecurityScheme
-                    }
-                },
-                Array.Empty<string>()
+                Name = "ACME Studios",
+                Email = "contact@acme.com"
+            },
+            License = new OpenApiLicense
+            {
+                Name = "Apache 2.0",
+                Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")
             }
         });
+    options.EnableAnnotations();
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
     });
-
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 // Configure Lowercase URLs
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 
 // Add CORS Policy
 builder.Services.AddCors(options =>

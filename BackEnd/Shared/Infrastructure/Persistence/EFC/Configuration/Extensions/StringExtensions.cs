@@ -11,13 +11,11 @@ public static class StringExtensions
         static IEnumerable<char> Convert(CharEnumerator e)
         {
             if (!e.MoveNext()) yield break;
-
             yield return char.ToLower(e.Current);
-
             while (e.MoveNext())
                 if (char.IsUpper(e.Current))
                 {
-                    yield return '_';
+                    yield return '-';
                     yield return char.ToLower(e.Current);
                 }
                 else
@@ -26,10 +24,9 @@ public static class StringExtensions
                 }
         }
     }
-    
+
     public static string ToPlural(this string text)
     {
         return text.Pluralize(false);
     }
-
 }

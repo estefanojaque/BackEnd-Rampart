@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
 
-public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
+public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 {
     protected readonly AppDbContext Context;
     protected BaseRepository(AppDbContext context)
     {
         Context = context;
     }
-    public async Task AddAsync(TEntity entity)
+    public async Task AddSync(TEntity entity)
     {
         await Context.Set<TEntity>().AddAsync(entity);
     }
