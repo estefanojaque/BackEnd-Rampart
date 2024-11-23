@@ -1,22 +1,9 @@
-using BackEnd.IAM.Domain.Model.Aggregates;
-using BackEnd.IAM.Interfaces.REST.Resources;
+﻿using BackEnd.IAM.Interfaces.Resources;
 
-namespace BackEnd.IAM.Interfaces.REST.Transform;
+namespace BackEnd.IAM.Interfaces.Transform;
 
-/// <summary>
-/// User Resource From Entity Assembler 
-/// </summary>
-public static class UserResourceFromEntityAssembler
+public class UserResourceFromEntityAssembler
 {
-    /// <summary>
-    /// This method converts a User entity to a UserResource. 
-    /// </summary>
-    /// <param name="user">
-    /// The <see cref="User"/> entity to convert.
-    /// </param>
-    /// <returns>
-    /// The <see cref="UserResource"/> object.
-    /// </returns>
     public static UserResource ToResourceFromEntity(User user)
     {
         return new UserResource(user.Id, user.Username);

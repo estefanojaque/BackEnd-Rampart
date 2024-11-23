@@ -1,12 +1,3 @@
-namespace BackEnd.IAM.Domain.Model.Commands;
+﻿namespace BackEnd.IAM;
 
-/// <summary>
-/// Sign up command 
-/// </summary>
-/// <param name="Username">
-/// The username of the user
-/// </param>
-/// <param name="Password">
-/// The password of the user
-/// </param>
 public record SignUpCommand(string Username, string Password);

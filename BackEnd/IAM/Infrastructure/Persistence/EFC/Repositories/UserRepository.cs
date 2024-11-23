@@ -1,26 +1,38 @@
-using Microsoft.EntityFrameworkCore;
-using BackEnd.IAM.Domain.Model.Aggregates;
-using BackEnd.IAM.Domain.Repositories;
-using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
+﻿using BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration;
 using BackEnd.Shared.Infrastructure.Persistence.EFC.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.IAM.Infrastructure.Persistence.EFC.Repositories;
 
-/// <summary>
-/// User repository implementation. 
-/// </summary>
-/// <param name="context">
-/// The <see cref="AppDbContext"/> database context.
-/// </param>
+/**
+ * <summary>
+ *     The user repository
+ * </summary>
+ * <remarks>
+ *     This repository is used to manage users
+ * </remarks>
+ */
 public class UserRepository(AppDbContext context) : BaseRepository<User>(context), IUserRepository
 {
-    // inheritedDoc
+    /**
+     * <summary>
+     *     Find a user by username
+     * </summary>
+     * <param name="username">The username to search</param>
+     * <returns>The user</returns>
+     */
     public async Task<User?> FindByUsernameAsync(string username)
     {
         return await Context.Set<User>().FirstOrDefaultAsync(user => user.Username.Equals(username));
     }
 
-    // inheritedDoc
+    /**
+     * <summary>
+     *     Check if a user exists by username
+     * </summary>
+     * <param name="username">The username to search</param>
+     * <returns>True if the user exists, false otherwise</returns>
+     */
     public bool ExistsByUsername(string username)
     {
         return Context.Set<User>().Any(user => user.Username.Equals(username));

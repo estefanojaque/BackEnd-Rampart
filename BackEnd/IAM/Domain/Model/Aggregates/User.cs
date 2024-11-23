@@ -1,51 +1,26 @@
-namespace BackEnd.IAM.Domain.Model.Aggregates;
+﻿using System.Text.Json.Serialization;
 
-/// <summary>
-/// User aggregate root 
-/// </summary>
-/// <param name="username">
-/// The username of the user
-/// </param>
-/// <param name="passwordHash">
-/// The password hash of the user
-/// </param>
+namespace BackEnd.IAM;
+
 public class User(string username, string passwordHash)
 {
+    public User() : this(string.Empty, string.Empty)
+    {
+    }
+
     public int Id { get; }
-
     public string Username { get; private set; } = username;
-    
-    public string PasswordHash { get; private set; } = passwordHash;
+    [JsonIgnore] public string PasswordHash { get; private set; } = passwordHash;
 
-    /// <summary>
-    /// Update the username of the user 
-    /// </summary>
-    /// <param name="username">
-    /// The new username to update
-    /// </param>
-    /// <returns>
-    /// The updated user
-    /// </returns>
     public User UpdateUsername(string username)
     {
-        this.Username = username;
+        Username = username;
         return this;
     }
-    
-    /// <summary>
-    /// Update the password hash of the user
-    /// </summary>
-    /// <param name="passwordHash">
-    /// The new password hash to update
-    /// </param>
-    /// <returns>
-    /// The updated user
-    /// </returns>
+
     public User UpdatePasswordHash(string passwordHash)
     {
-        this.PasswordHash = passwordHash;
+        PasswordHash = passwordHash;
         return this;
     }
-    
-
 }

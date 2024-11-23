@@ -1,6 +1,3 @@
-namespace BackEnd.IAM.Domain.Model.Queries;
+﻿namespace BackEnd.IAM;
 
-/// <summary>
-/// Get all users query 
-/// </summary>
-public record GetAllUsersQuery();
+public record GetAllUsersQuery;
