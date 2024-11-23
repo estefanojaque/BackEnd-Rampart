@@ -29,11 +29,10 @@ using BackEnd.IAM.Infrastructure.Persistence.EFC.Repositories;
 using BackEnd.IAM.Infrastructure.Pipeline.Extensions;
 using BackEnd.IAM.Infrastructure.Tokens.JWT.Configuration;
 using BackEnd.IAM.Infrastructure.Tokens.JWT.Services;
-using BackEnd.IAM.Interfaces.ACL;
 using BackEnd.IAM.Interfaces.ACL.Services;
 using BackEnd.IAM.Interfaces.ACL.Services.Services;
 using BackEnd.Orders.Infrastructure.Persistence.EFC.Repositories;
-using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration; // Agregado
+using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration; 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -43,6 +42,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()));
 
+// Add Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Configure Database Context and Logging Levels
@@ -70,13 +70,13 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1",
         new OpenApiInfo
         {
-            Title = "ACME.LearningCenterPlatform.API",
+            Title = "Rampart.API",
             Version = "v1",
-            Description = "ACME Learning Center Platform API",
-            TermsOfService = new Uri("https://acme-learning.com/tos"),
+            Description = "Rampart Company API",
+            TermsOfService = new Uri("https://Rampart.com/tos"),
             Contact = new OpenApiContact
             {
-                Name = "ACME Studios",
+                Name = "Rampart",
                 Email = "contact@acme.com"
             },
             License = new OpenApiLicense
