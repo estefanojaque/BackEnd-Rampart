@@ -1,20 +1,35 @@
-using BackEnd.IAM.Application.Internal.OutboundServices;
+﻿using BackEnd.IAM.Application.Internal.OutboundServices;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace BackEnd.IAM.Infrastructure.Hashing.BCrypt.Services;
 
-/// <summary>
-/// Hashing service using BCrypt algorithm. 
-/// </summary>
+/**
+ * <summary>
+ *     This class is responsible for hashing and validating passwords.
+ * </summary>
+ */
 public class HashingService : IHashingService
 {
-    // inheritedDoc
+    /**
+     * <summary>
+     *     This method hashes a password.
+     * </summary>
+     * <param name="password">The password to passwordHash.</param>
+     * <returns>The hashed password.</returns>
+     */
     public string HashPassword(string password)
     {
         return BCryptNet.HashPassword(password);
     }
 
-    // inheritedDoc
+    /**
+     * <summary>
+     *     This method validates a password against a passwordHash.
+     * </summary>
+     * <param name="password">The password to validate.</param>
+     * <param name="passwordHash">The passwordHash to validate against.</param>
+     * <returns>True if the password is valid, false otherwise.</returns>
+     */
     public bool VerifyPassword(string password, string passwordHash)
     {
         return BCryptNet.Verify(password, passwordHash);

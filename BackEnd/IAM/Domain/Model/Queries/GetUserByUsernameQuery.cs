@@ -1,9 +1,3 @@
-namespace BackEnd.IAM.Domain.Model.Queries;
+﻿namespace BackEnd.IAM;
 
-/// <summary>
-/// Get user by username query 
-/// </summary>
-/// <param name="Username">
-/// The username to get
-/// </param>
 public record GetUserByUsernameQuery(string Username);

@@ -20,18 +20,18 @@ using BackEnd.Dishes.Application.Internal.QueryServices;
 using BackEnd.Dishes.Domain.Repositories;
 using BackEnd.Dishes.Domain.services;
 using BackEnd.Dishes.Infrastructure.Persistence.EFC.Repositories;
-using BackEnd.IAM.Application.ACL.Services;
+using BackEnd.IAM;
 using BackEnd.IAM.Application.Internal.CommandServices;
 using BackEnd.IAM.Application.Internal.OutboundServices;
 using BackEnd.IAM.Application.Internal.QueryServices;
-using BackEnd.IAM.Domain.Repositories;
-using BackEnd.IAM.Domain.Services;
 using BackEnd.IAM.Infrastructure.Hashing.BCrypt.Services;
 using BackEnd.IAM.Infrastructure.Persistence.EFC.Repositories;
-using BackEnd.IAM.Infrastructure.Pipeline.Middleware.Extensions;
+using BackEnd.IAM.Infrastructure.Pipeline.Extensions;
 using BackEnd.IAM.Infrastructure.Tokens.JWT.Configuration;
 using BackEnd.IAM.Infrastructure.Tokens.JWT.Services;
 using BackEnd.IAM.Interfaces.ACL;
+using BackEnd.IAM.Interfaces.ACL.Services;
+using BackEnd.IAM.Interfaces.ACL.Services.Services;
 using BackEnd.Orders.Infrastructure.Persistence.EFC.Repositories;
 using BackEnd.Shared.Infrastructure.Interfaces.ASP.Configuration; // Agregado
 using Microsoft.EntityFrameworkCore;
@@ -152,13 +152,15 @@ builder.Services.AddScoped<IPostCommandService, PostCommandService>();
 
 //  IAM Bounded Context Injection Configuration
 
+// IAM Bounded Context Injection Configuration
+
 // TokenSettings Configuration
 
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService, UserCommandService>();
-builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<IUserQueryServices, UserQueryServices>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
 builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
@@ -177,14 +179,10 @@ using (var scope = app.Services.CreateScope())
 
 //***********************(Deploy backend)************************
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "BackEnd v1");
-        c.RoutePrefix = string.Empty; // Esto hace que Swagger esté disponible en la raíz
-    });
+    app.UseSwaggerUI();
 }
 //***********************(Deploy backend)************************
 

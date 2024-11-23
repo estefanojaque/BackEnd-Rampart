@@ -1,24 +1,11 @@
-using BackEnd.IAM.Domain.Model.Commands;
-using BackEnd.IAM.Interfaces.REST.Resources;
+﻿using BackEnd.IAM.Interfaces.Resources;
 
-namespace BackEnd.IAM.Interfaces.REST.Transform;
+namespace BackEnd.IAM.Interfaces.Transform;
 
-/// <summary>
-/// Assembler for <see cref="SignInCommand"/> from <see cref="SignInResource"/> 
-/// </summary>
-public static class SignInCommandFromResourceAssembler
+public class SignInCommandFromResourceAssembler
 {
-    /// <summary>
-    /// Assembles <see cref="SignInCommand"/> from <see cref="SignInResource"/> 
-    /// </summary>
-    /// <param name="resource">
-    /// <see cref="SignInResource"/> Sign in resource
-    /// </param>
-    /// <returns>
-    /// <see cref="SignInCommand"/> Sign in command     
-    /// </returns>
     public static SignInCommand ToCommandFromResource(SignInResource resource)
     {
-        return new SignInCommand(resource.UserName, resource.Password);
+        return new SignInCommand(resource.Username, resource.Password);
     }
 }

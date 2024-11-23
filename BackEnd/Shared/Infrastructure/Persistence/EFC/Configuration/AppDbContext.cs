@@ -2,7 +2,7 @@
 using BackEnd.Chefs.Domain.Model.Aggregates;
 using BackEnd.Orders.Domain.Model.Aggregates;
 using BackEnd.Dishes.Domain.Model.Aggregates;
-using BackEnd.IAM.Domain.Model.Aggregates;
+using BackEnd.IAM;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
 using BackEnd.Posts.Domain.Model.Aggregates;
@@ -73,7 +73,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Dish>().Property(f=> f.CreatedDate).IsRequired();        
         builder.Entity<Dish>().Property(f=> f.UpdatedDate).IsRequired();
         
-        // IAM Context
+        //IAM Context
+
         builder.Entity<User>().HasKey(u => u.Id);
         builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<User>().Property(u => u.Username).IsRequired();
