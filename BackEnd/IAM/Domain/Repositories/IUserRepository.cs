@@ -1,6 +1,7 @@
-﻿using BackEnd.Shared.Domain.Repositories;
+﻿using BackEnd.IAM.Domain.Model.Aggregates;
+using BackEnd.Shared.Domain.Repositories;
 
-namespace BackEnd.IAM;
+namespace BackEnd.IAM.Domain.Repositories;
 
 public interface IUserRepository : IBaseRepository<User>
 {

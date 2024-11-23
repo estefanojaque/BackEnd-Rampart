@@ -1,4 +1,8 @@
 ﻿using BackEnd.IAM.Application.Internal.OutboundServices;
+using BackEnd.IAM.Domain.Model.Aggregates;
+using BackEnd.IAM.Domain.Model.Commands;
+using BackEnd.IAM.Domain.Repositories;
+using BackEnd.IAM.Domain.Services;
 using BackEnd.Shared.Domain.Repositories;
 
 namespace BackEnd.IAM.Application.Internal.CommandServices;

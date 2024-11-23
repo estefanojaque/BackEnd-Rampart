@@ -1,4 +1,9 @@
-﻿namespace BackEnd.IAM.Application.Internal.QueryServices;
+﻿using BackEnd.IAM.Domain.Model.Aggregates;
+using BackEnd.IAM.Domain.Model.Queries;
+using BackEnd.IAM.Domain.Repositories;
+using BackEnd.IAM.Domain.Services;
+
+namespace BackEnd.IAM.Application.Internal.QueryServices;
 
 public class UserQueryServices(IUserRepository userRepository) : IUserQueryServices
 {

@@ -2,7 +2,7 @@
 using BackEnd.Chefs.Domain.Model.Aggregates;
 using BackEnd.Orders.Domain.Model.Aggregates;
 using BackEnd.Dishes.Domain.Model.Aggregates;
-using BackEnd.IAM;
+using BackEnd.IAM.Domain.Model.Aggregates;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
 using BackEnd.Posts.Domain.Model.Aggregates;

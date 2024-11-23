@@ -1,4 +1,6 @@
-﻿namespace BackEnd.IAM.Application.Internal.OutboundServices;
+﻿using BackEnd.IAM.Domain.Model.Aggregates;
+
+namespace BackEnd.IAM.Application.Internal.OutboundServices;
 
 /**
  * <summary>

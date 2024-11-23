@@ -1,4 +1,8 @@
-﻿namespace BackEnd.IAM.Interfaces.ACL.Services.Services;
+﻿using BackEnd.IAM.Domain.Model.Commands;
+using BackEnd.IAM.Domain.Model.Queries;
+using BackEnd.IAM.Domain.Services;
+
+namespace BackEnd.IAM.Interfaces.ACL.Services;
 
 public class IamContextFacade(
     IUserCommandService userCommandService,

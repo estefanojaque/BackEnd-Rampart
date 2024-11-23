@@ -1,4 +1,4 @@
-﻿namespace BackEnd.IAM.Interfaces.ACL.Services;
+﻿namespace BackEnd.IAM.Interfaces.ACL;
 
 public interface IIamContextFacade
 {

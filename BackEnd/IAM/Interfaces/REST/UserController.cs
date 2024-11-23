@@ -1,8 +1,10 @@
 ﻿using System.Net.Mime;
-using BackEnd.IAM.Interfaces.Transform;
+using BackEnd.IAM.Domain.Model.Queries;
+using BackEnd.IAM.Domain.Services;
+using BackEnd.IAM.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BackEnd.IAM.Interfaces;
+namespace BackEnd.IAM.Interfaces.REST;
 
 [ApiController]
 [Route("api/v1/[controller]")]

@@ -1,10 +1,11 @@
 ﻿using System.Net.Mime;
+using BackEnd.IAM.Domain.Services;
 using BackEnd.IAM.Infrastructure.Pipeline.Attributes;
-using BackEnd.IAM.Interfaces.Resources;
-using BackEnd.IAM.Interfaces.Transform;
+using BackEnd.IAM.Interfaces.REST.Resources;
+using BackEnd.IAM.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BackEnd.IAM.Interfaces;
+namespace BackEnd.IAM.Interfaces.REST;
 
 [Authorize]
 [ApiController]

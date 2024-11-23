@@ -1,6 +1,7 @@
-﻿using BackEnd.IAM.Interfaces.Resources;
+﻿using BackEnd.IAM.Domain.Model.Commands;
+using BackEnd.IAM.Interfaces.REST.Resources;
 
-namespace BackEnd.IAM.Interfaces.Transform;
+namespace BackEnd.IAM.Interfaces.REST.Transform;
 
 public class SignInCommandFromResourceAssembler
 {

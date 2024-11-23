@@ -1,4 +1,6 @@
 ﻿using BackEnd.IAM.Application.Internal.OutboundServices;
+using BackEnd.IAM.Domain.Model.Queries;
+using BackEnd.IAM.Domain.Services;
 using BackEnd.IAM.Infrastructure.Pipeline.Attributes;
 
 namespace BackEnd.IAM.Infrastructure.Pipeline.Components;

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text;
 using BackEnd.IAM.Application.Internal.OutboundServices;
+using BackEnd.IAM.Domain.Model.Aggregates;
 using BackEnd.IAM.Infrastructure.Tokens.JWT.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;

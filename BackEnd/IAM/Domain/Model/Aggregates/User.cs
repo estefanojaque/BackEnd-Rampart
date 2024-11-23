@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace BackEnd.IAM;
+namespace BackEnd.IAM.Domain.Model.Aggregates;
 
 public class User(string username, string passwordHash)
 {
