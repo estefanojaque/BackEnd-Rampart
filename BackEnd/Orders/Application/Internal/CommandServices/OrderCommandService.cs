@@ -18,7 +18,7 @@ public class OrderCommandService(IOrderRepository orderRepository,
         var order = new Order(command);
         try
         {
-            await orderRepository.AddAsync(order);
+            await orderRepository.AddSync(order);
             await unitOfWork.CompleteAsync();
         }
         catch (Exception e)

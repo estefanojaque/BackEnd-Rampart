@@ -14,7 +14,7 @@ public interface IBaseRepository<TEntity>
     /// </summary>
     /// <param name="entity">Entity object to add</param>
     /// <returns></returns>
-    Task AddAsync(TEntity entity);
+    Task AddSync(TEntity entity);
     
     /// <summary>
     ///  Update entity

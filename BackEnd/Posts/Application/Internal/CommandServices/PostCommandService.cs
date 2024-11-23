@@ -13,7 +13,7 @@ public class PostCommandService(IPostRepository postRepository, IUnitOfWork unit
         var post = new Post(command);
         try
         {
-            await postRepository.AddAsync(post);
+            await postRepository.AddSync(post);
             await unitOfWork.CompleteAsync();
         }
         catch (Exception e)

@@ -4,26 +4,34 @@ namespace BackEnd.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions
 
 public static class ModelBuilderExtensions
 {
-    public static void UseSnakeCaseNamingConvention(this ModelBuilder builder)
+    public static void UseSnakeCaseWithPluralizedTableNamingConvention(this ModelBuilder builder)
     {
         foreach (var entity in builder.Model.GetEntityTypes())
         {
-            entity.SetTableName(entity.GetTableName().ToSnakeCase());
+            var tableName = entity.GetTableName();
+            if (!string.IsNullOrEmpty(tableName)) entity.SetTableName(tableName.ToPlural().ToSnakeCase());
+
             foreach (var property in entity.GetProperties())
-            {
                 property.SetColumnName(property.GetColumnName().ToSnakeCase());
-            }
+
             foreach (var key in entity.GetKeys())
             {
-                key.SetName(key.GetName().ToSnakeCase());
+                var keyName = key.GetName();
+                if (!string.IsNullOrEmpty(keyName)) key.SetName(keyName.ToSnakeCase());
             }
-            foreach (var key in entity.GetForeignKeys())
+
+            foreach (var foreignkey in entity.GetForeignKeys())
             {
-                key.SetConstraintName(key.GetConstraintName().ToSnakeCase());
+                var foreignKeyConstraintName = foreignkey.GetConstraintName();
+                if (!string.IsNullOrEmpty(foreignKeyConstraintName))
+                    foreignkey.SetConstraintName(foreignKeyConstraintName.ToSnakeCase());
             }
+
             foreach (var index in entity.GetIndexes())
             {
-                index.SetDatabaseName(index.GetDatabaseName().ToSnakeCase());
+                var indexDatabaseName = index.GetDatabaseName();
+                if (!string.IsNullOrEmpty(indexDatabaseName))
+                    index.SetDatabaseName(indexDatabaseName.ToSnakeCase());
             }
         }
     }

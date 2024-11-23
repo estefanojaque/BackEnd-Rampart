@@ -18,7 +18,7 @@ public class ChefCommandService(IChefRepository chefRepository, IUnitOfWork unit
         var chef = new Chef(command);
         try
         {
-            await chefRepository.AddAsync(chef);
+            await chefRepository.AddSync(chef);
             await unitOfWork.CompleteAsync();
             return chef;
         }

@@ -16,7 +16,7 @@ public class DishCommandService(IDishRepository dishRepository, IUnitOfWork unit
         var dish = new Dish(command);
         try
         {
-            await dishRepository.AddAsync(dish);
+            await dishRepository.AddSync(dish);
             await unitOfWork.CompleteAsync();
             return dish;
         }

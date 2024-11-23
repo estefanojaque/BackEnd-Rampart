@@ -29,7 +29,7 @@ public class UserCommandService(
         var user = new User(command.Username, hashedPassword);
         try
         {
-            await userRepository.AddAsync(user);
+            await userRepository.AddSync(user);
             await unitOfWork.CompleteAsync();
         }
         catch (Exception e)
